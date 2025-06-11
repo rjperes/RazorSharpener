@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/RazorSharpener/bin
+/RazorSharpener/obj
+/RazorSharpener.Console/bin
+/RazorSharpener.Console/obj
+/RazorSharpener.Console/publish_nuget.cmd

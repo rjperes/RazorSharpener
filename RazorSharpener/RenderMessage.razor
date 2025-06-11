@@ -1,0 +1,13 @@
+﻿@if (string.IsNullOrWhiteSpace(Message))
+{
+    <p>No message provided</p>
+}
+else
+{
+    <p>@Message</p>
+}
+
+@code {
+    [Parameter]
+    public string? Message { get; set; }
+}

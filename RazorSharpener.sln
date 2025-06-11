@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36121.58
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorSharpener", "RazorSharpener\RazorSharpener.csproj", "{C1F3C512-0D62-4937-8F2E-4822B30C163E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorSharpener.Console", "RazorSharpener.Console\RazorSharpener.Console.csproj", "{3779D9FB-BCA9-4071-BCBC-449912514A0D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C1F3C512-0D62-4937-8F2E-4822B30C163E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1F3C512-0D62-4937-8F2E-4822B30C163E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1F3C512-0D62-4937-8F2E-4822B30C163E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1F3C512-0D62-4937-8F2E-4822B30C163E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3779D9FB-BCA9-4071-BCBC-449912514A0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3779D9FB-BCA9-4071-BCBC-449912514A0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3779D9FB-BCA9-4071-BCBC-449912514A0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3779D9FB-BCA9-4071-BCBC-449912514A0D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {81D72E66-41B5-49ED-ADDD-F020FC0F0C2F}
+	EndGlobalSection
+EndGlobal
