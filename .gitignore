@@ -7,4 +7,4 @@
 /RazorSharpener/obj
 /RazorSharpener.Console/bin
 /RazorSharpener.Console/obj
-/RazorSharpener.Console/publish_nuget.cmd
+/publish_nuget.cmd
