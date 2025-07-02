@@ -27,8 +27,6 @@ namespace RazorSharpener
 
         private static readonly RazorProjectFileSystem _projectFilesystem = RazorProjectFileSystem.Create(".");
 
-        private static readonly RazorProjectEngine _engine = RazorProjectEngine.Create(RazorConfiguration.Default, _projectFilesystem);
-
         private static readonly CSharpCompilationOptions _compilationOptions = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
             .WithOverflowChecks(true)
             .WithOptimizationLevel(OptimizationLevel.Release);
@@ -43,14 +41,8 @@ namespace RazorSharpener
         {            
         }
 
-        public Assembly Compile(string sourceFile, CSharpCompilationOptions options, params IReadOnlyCollection<Assembly> referenceAssemblies)
+        private Assembly Compile(RazorCodeDocument codeDocument, CSharpCompilationOptions options, params IReadOnlyCollection<Assembly> referenceAssemblies)
         {
-            ArgumentException.ThrowIfNullOrEmpty(sourceFile);
-
-            var item = _projectFilesystem.GetItem(sourceFile);
-
-            var codeDocument = _engine.Process(item);
-
             var csDocument = codeDocument.GetCSharpDocument();
 
             var logger = _loggerFactory.CreateLogger<RazorCompiler>();
@@ -58,9 +50,9 @@ namespace RazorSharpener
 
             var syntaxTree = CSharpSyntaxTree.ParseText(csDocument.GeneratedCode);
 
-            var assemblyName = Path.GetRandomFileName();
-
             var references = _references.Concat(referenceAssemblies.Select(asm => MetadataReference.CreateFromFile(asm.Location)));
+
+            var assemblyName = Path.GetFileNameWithoutExtension(Path.GetTempFileName());
 
             var compilation = CSharpCompilation.Create(assemblyName, [syntaxTree], references, options);
 
@@ -79,9 +71,65 @@ namespace RazorSharpener
             return assembly;
         }
 
-        public Assembly Compile(string sourceFile, params IReadOnlyCollection<Assembly> referenceAssemblies)
+        public Assembly CompileContent(string content, CSharpCompilationOptions options, params IReadOnlyCollection<Assembly> referenceAssemblies)
         {
-            return Compile(sourceFile, _compilationOptions, referenceAssemblies);
+            ArgumentException.ThrowIfNullOrEmpty(content);
+
+            var document = RazorSourceDocument.Create(content, (string?)null);
+
+            var engine = RazorProjectEngine.Create(
+                RazorConfiguration.Default,
+                _projectFilesystem,
+                builder =>
+                {
+                    builder.SetNamespace("Razor.Generated");
+                    builder.ConfigureClass((doc, node) =>
+                    {
+                        node.BaseType = typeof(ComponentBase).FullName;
+                    });
+                });
+
+            var codeDocument = engine.Process(document, null, [], []);
+
+            return Compile(codeDocument, options, referenceAssemblies);
+        }
+
+        public Assembly CompileContent(string content, params IReadOnlyCollection<Assembly> referenceAssemblies)
+        {
+            return CompileContent(content, _compilationOptions, referenceAssemblies);
+        }
+
+        public Assembly CompileFile(string sourceFile, CSharpCompilationOptions options, params IReadOnlyCollection<Assembly> referenceAssemblies)
+        {
+            //see https://github.com/Merlin04/RazorEngineCore/blob/multiple-templates-in-assembly/RazorEngineCore/RazorEngine.cs
+            ArgumentException.ThrowIfNullOrEmpty(sourceFile);
+
+            var item = _projectFilesystem.GetItem(sourceFile);
+
+            var className = Path.GetFileNameWithoutExtension(sourceFile);
+            var assemblyName = className;
+
+            var engine = RazorProjectEngine.Create(
+                RazorConfiguration.Default,
+                _projectFilesystem,
+                builder =>
+                {
+                    builder.SetNamespace("Razor.Generated");
+                    builder.ConfigureClass((doc, node) =>
+                    {
+                        node.ClassName = className;
+                        node.BaseType = typeof(ComponentBase).FullName;
+                    });
+                });
+
+            var codeDocument = engine.Process(item);
+
+            return Compile(codeDocument, options, referenceAssemblies);
+        }
+
+        public Assembly CompileFile(string sourceFile, params IReadOnlyCollection<Assembly> referenceAssemblies)
+        {
+            return CompileFile(sourceFile, _compilationOptions, referenceAssemblies);
         }
     }
 }
