@@ -91,7 +91,7 @@ namespace RazorSharpener
                     });
                 });
 
-            var codeDocument = engine.Process(document, null, [], []);
+            var codeDocument = engine.ProcessDesignTime(document, null, [], []);
 
             return Compile(codeDocument, options, referenceAssemblies);
         }
