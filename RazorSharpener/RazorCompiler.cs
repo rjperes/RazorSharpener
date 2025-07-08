@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Razor.Hosting;
 using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.CodeAnalysis;
@@ -18,10 +19,11 @@ namespace RazorSharpener
             MetadataReference.CreateFromFile(Assembly.GetExecutingAssembly().Location),
             MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
             MetadataReference.CreateFromFile(typeof(IComponent).Assembly.Location),
+            MetadataReference.CreateFromFile(typeof(RazorPage).Assembly.Location),
             MetadataReference.CreateFromFile(typeof(RazorCompiledItemAttribute).Assembly.Location),
             MetadataReference.CreateFromFile(Path.Combine(_assemblyPath, "mscorlib.dll")),
             MetadataReference.CreateFromFile(Path.Combine(_assemblyPath, "System.dll")),
-            MetadataReference.CreateFromFile(Path.Combine(assemblyPath, "netstandard.dll")),
+            MetadataReference.CreateFromFile(Path.Combine(_assemblyPath, "netstandard.dll")),
             MetadataReference.CreateFromFile(Path.Combine(_assemblyPath, "System.Core.dll")),
             MetadataReference.CreateFromFile(Path.Combine(_assemblyPath, "System.Runtime.dll"))
         ];

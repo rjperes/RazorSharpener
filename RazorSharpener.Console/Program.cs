@@ -14,7 +14,9 @@
             var renderer = new RazorRenderer();
             //var html = await renderer.Render<RenderMessage>(dictionary);
             
-            var asm = compiler.CompileFile("RenderMessage.razor");
+            //var asm = compiler.CompileFile("RenderMessage.razor");
+            var asm = compiler.CompileContent(File.ReadAllText("RenderMessage.razor"));
+
             var componentType = asm.GetTypes().First();
             var html = await renderer.Render(componentType, dictionary);
 
