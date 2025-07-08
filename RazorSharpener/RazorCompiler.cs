@@ -21,6 +21,7 @@ namespace RazorSharpener
             MetadataReference.CreateFromFile(typeof(RazorCompiledItemAttribute).Assembly.Location),
             MetadataReference.CreateFromFile(Path.Combine(_assemblyPath, "mscorlib.dll")),
             MetadataReference.CreateFromFile(Path.Combine(_assemblyPath, "System.dll")),
+            MetadataReference.CreateFromFile(Path.Combine(assemblyPath, "netstandard.dll")),
             MetadataReference.CreateFromFile(Path.Combine(_assemblyPath, "System.Core.dll")),
             MetadataReference.CreateFromFile(Path.Combine(_assemblyPath, "System.Runtime.dll"))
         ];
@@ -75,8 +76,9 @@ namespace RazorSharpener
         {
             ArgumentException.ThrowIfNullOrEmpty(content);
 
-            var document = RazorSourceDocument.Create(content, (string?)null);
-
+            var assemblyName = Path.GetFileNameWithoutExtension(Path.GetTempFileName());
+            var document = RazorSourceDocument.Create(content, assemblyName + ".razor");
+            
             var engine = RazorProjectEngine.Create(
                 RazorConfiguration.Default,
                 _projectFilesystem,
@@ -85,7 +87,7 @@ namespace RazorSharpener
                     builder.SetNamespace("Razor.Generated");
                     builder.ConfigureClass((doc, node) =>
                     {
-                        node.BaseType = typeof(ComponentBase).FullName;
+                        node.BaseType = typeof(RazorPage).FullName;
                     });
                 });
 
